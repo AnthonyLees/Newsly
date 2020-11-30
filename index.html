@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="css/style.css"/>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+        </style>
+        <title>Capital One News</title>
+
+    </head>
+    <body>
+        <!--Header-->
+        <header class="mainheader">
+            News-ly
+        </header>
+        <header class="subheader">
+            Entertainment | Sports | Technology
+        </header>
+        <form class="search" action="">
+            <label for="">Search for News!</label></br>
+            <input id="input_keyword" type="text"/>
+            <script>
+            const keyword_enter = document.getElementById('input_keyword');
+            keyword_enter.addEventListener('keydown', e => {
+                if (e.key == 'Enter') {
+                    gatherNews();
+                }
+            });
+            </script>
+            <input type="button" class="button" value="search" onclick="gatherNews()"/>
+        </form>
+
+        <!--News Options-->
+        <form class="categories" id="categories">
+            <p class="search-option">Categories</p>
+            <label style="font-size: 10px; position: relative; top: -1px;">
+            <input type="radio" name="choice_c" value="entertainment"> 
+            Entertainment</label>
+            <label style="font-size: 10px; position: relative; top: -1px;">
+            <input type="radio" name="choice_c" value="sports"> 
+            Sports</label>
+            <label style="font-size: 10px; position: relative; top: -1px;">
+            <input type="radio" name="choice_c" value="technology"> 
+            Technology</label>
+        </form>
+
+        <form class="num_results" id="num_results">
+            <p class="search-option">Number of results</p>
+            <label style="font-size: 10px; position: relative; top: -2px;">
+            <input type="radio" name="choice_r" value="5"> 
+            5</label>
+            <label style="font-size: 10px; position: relative; top: -2px;">
+            <input type="radio" name="choice_r" value="10"> 
+            10</label>
+            <label style="font-size: 10px; position: relative; top: -2px;">
+            <input type="radio" name="choice_r" value="20"> 
+            20</label>
+            <label style="font-size: 10px; position: relative; top: -2px;">
+            <input type="radio" name="choice_r" value="40"> 
+            40</label>
+        </form>
+
+        <form class="country" id="country">
+            <p class="search-option">Region</p>
+            <label style="font-size: 10px; position: relative; top: -2px;">
+            <input type="radio" name="choice_co" value="country=us"> 
+            U.S.</label>
+            <label style="font-size: 10px; position: relative; top: -2px;">
+            <input type="radio" name="choice_co" value=""> 
+            Global News</label>
+        </form>
+
+        <div class="notes">
+            <p class="search-option">1. Choosing global news may result in duplicate articles</br>2. You are required to choose a category, result number, and region</br>3. Entering no keyword will result in the most recent headlines</br>4. Always hit the search button for results</p>
+        </div>
+        <!--News Display-->
+        <div class="news-container">
+            <ul class="news-list"></ul>
+        </div>
+
+        <!--Search script-->
+        <script>
+
+            function getRadioVal(form, name) {
+                var val;
+                // get list of radio buttons with specified name
+                var radios = form.elements[name];
+                
+                // loop through list of radio buttons
+                for (var i=0, len=radios.length; i<len; i++) {
+                    if ( radios[i].checked ) {
+                        val = radios[i].value;
+                        break;
+                    }
+                }
+                return val; // return value of checked radio or undefined if none checked
+            }
+
+            //Removes child nodes of a given parent
+            function removeAllChildNodes(parent) {
+                while (parent.firstChild) {
+                    parent.removeChild(parent.firstChild);
+                }
+            }
+
+            //Gathers news data and displays it
+            function gatherNews() {
+                const input_keyword = document.getElementById('input_keyword');
+                let topic = input_keyword.value;
+                console.log(topic)
+                if (topic == null) {
+                    topic = ''
+                }
+                else {
+                    topic = '&q='+topic
+                }
+
+                let category = getRadioVal(document.getElementById('categories'), "choice_c");
+                console.log(category)
+
+                let results = getRadioVal(document.getElementById('num_results'), "choice_r");
+                console.log(results)
+
+                let country = getRadioVal(document.getElementById('country'), "choice_co");
+
+                const apiKey = '78b9d599c4f94f8fa3afb1a5458928d6';
+                if (country == '') {
+                    var url = 'https://newsapi.org/v2/top-headlines?'+country+'category='+category+topic+'&pageSize='+results+'&apiKey='+apiKey;
+                }
+                
+                else {
+                    var url = 'https://newsapi.org/v2/top-headlines?'+country+'&category='+category+topic+'&pageSize='+results+'&apiKey='+apiKey;
+                }
+                
+
+                console.log(url)
+
+                const newsList = document.querySelector('.news-list');
+                removeAllChildNodes(newsList);
+                
+                //Fetch url then display data from url
+                fetch(url).then((res)=>{
+                    return res.json()
+                }).then(data=>{
+                    console.log(data)
+                    data.articles.forEach(article =>{
+                        let linebreak = document.createElement("br");
+                        let li = document.createElement('li');
+                        let article_info = document.createElement('div');
+                        article_info.style.textAlign = "left"
+                        article_info.style.position = "relative"
+                        article_info.style.left = "100px"
+                        article_info.style.fontFamily = "font-family: 'Dosis', sans-serif"
+
+                        let source = document.createElement('p');
+                        source.textContent = "Source: "+Object.values(article.source)[1]
+                        source.style.fontSize = "10px"
+                        source.style.textAlign = "left"
+                        source.style.position = "relative"
+                        source.style.left = "100px"
+                        source.style.fontFamily = "font-family: 'Dosis', sans-serif"
+                        article_info.append(source)
+                        article_info.append(linebreak)
+
+                        let title = document.createElement('a');
+                        title.setAttribute('href', article.url);
+                        title.setAttribute('target', '_blank');
+                        title.textContent = article.title;
+
+                        title.style.color = "#2f6ec0"
+                        title.style.fontSize = "20px"
+                        title.style.textAlign = "left"
+                        title.style.position = "relative"
+                        title.style.left = "100px"
+                        title.style.fontFamily = "font-family: 'Dosis', sans-serif"
+                        article_info.append(title)
+                        article_info.append(linebreak)
+
+
+                        let date = document.createElement('p');
+                        date.textContent = "Date Published: "+article.publishedAt.slice(0, 10)
+                        date.style.fontSize = "12px"
+                        date.style.textAlign = "left"
+                        date.style.position = "relative"
+                        date.style.left = "100px"
+                        date.style.fontFamily = "font-family: 'Dosis', sans-serif"
+                        date.style.fontWeight = "bold"
+                        article_info.append(date)
+                        article_info.append(linebreak)
+
+                        let author = document.createElement('p');
+                        if (article.author == null || article.author == "") {
+                            author.textContent = "Author: Not Listed"
+                        } 
+                        else {
+                            author.textContent = "Author: "+article.author
+                        }
+                        author.style.fontSize = "12px"
+                        author.style.textAlign = "left"
+                        author.style.position = "relative"
+                        author.style.left = "100px"
+                        author.style.fontFamily = "font-family: 'Dosis', sans-serif"
+                        author.style.fontWeight = "bold"
+                        article_info.append(author)
+                        article_info.append(linebreak)
+
+                        let desc = document.createElement('p')
+                        desc.textContent = article.description
+                        desc.style.fontSize = "12px"
+                        desc.style.textAlign = "left"
+                        desc.style.position = "relative"
+                        desc.style.left = "100px"
+                        desc.style.fontFamily = "font-family: 'Dosis', sans-serif"
+                        article_info.append(desc)
+                        article_info.append(linebreak)
+
+
+
+
+                        //append each item to the current article, and append
+                        //current article to news list
+                        li.appendChild(article_info);
+                        newsList.appendChild(li);
+
+                    })
+                }).catch(error=>{
+                    console.log(error)
+                })
+            }
+        </script>
+    </body>
+</html>

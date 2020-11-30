@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-align: center
+    
+}
+
+.categories {
+    font-family: 'Titillium Web', sans-serif;
+    position: relative;
+    top : 150px;
+    left: -25px;
+    font-size: 50%;
+}
+
+.button {
+    font-family: 'Titillium Web', sans-serif;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 60%;
+    margin: 2px 2px;
+    cursor: pointer;
+  }
+
+.categories {
+    font-family: 'Titillium Web', sans-serif;
+    position: relative;
+    top : 150px;
+    left: -25px;
+    font-size: 50%;
+}
+
+.categories-option {
+    font-size: 50%;
+}
+
+.country {
+    font-family: 'Titillium Web', sans-serif;
+    position: relative;
+    top : 165px;
+    left: -20px;
+}
+
+.mainheader {
+    font-family: 'Raleway', sans-serif;
+    font-size: 312.5%;
+    position: relative;
+    top : 100px;
+    font-weight: bold;
+}
+
+.news-container {
+    position: relative;
+    top: 200px;
+}
+
+.notes {
+    font-family: 'Titillium Web', sans-serif;
+    position: relative;
+    top : 175px;
+    left: -20px;
+}
+
+.num_results {
+    font-family: 'Titillium Web', sans-serif;
+    position: relative;
+    top : 160px;
+    left: -20px;
+}
+
+.search {
+    font-family: 'Titillium Web', sans-serif;
+    position: relative;
+    font-size: 125%;
+    position: relative;
+    top : 150px;
+    
+}
+
+.search-option {
+    font-size: 15px;
+}
+
+.subheader {
+    font-family: 'Raleway', sans-serif;
+    font-size: 187.5%;
+    position: relative;
+    top : 120px;
+}
